@@ -82,7 +82,6 @@ const getCurrentWeather = async (baseURL, data, apiKey) => {
         const data = await res.json();
         if (!data.hasOwnProperty('coord')) {
             errorDisplay();
-            console.log('Not Found')
         } else {
             console.log(data);
             addCurrentWeather(data);
