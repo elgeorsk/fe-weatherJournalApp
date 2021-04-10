@@ -108,6 +108,7 @@ if (window.innerWidth <= 700 ) {
 // functions
 function hideInfoSec(){
    infoSec.style.display = 'none';
+   entryHolderSec.style.display = 'block';
    hideBtn.classList.remove('fa-eye-slash');
    hideBtn.classList.add('fa-eye-slash');
    counter = 1;
@@ -115,6 +116,7 @@ function hideInfoSec(){
 
 function showInfoSec(){
     infoSec.style.display = 'block';
+    entryHolderSec.style.display = 'none';
     hideBtn.classList.remove('fa-eye-slash');
     hideBtn.classList.add('fa-eye');
     counter = 0;

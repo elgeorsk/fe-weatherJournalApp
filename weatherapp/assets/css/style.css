@@ -169,6 +169,7 @@ section {
 
 .entryHolder {
     grid-area: entryHolder;
+    display: none;
     overflow-y: auto;
 }
 
