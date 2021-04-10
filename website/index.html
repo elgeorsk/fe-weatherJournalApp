@@ -28,22 +28,36 @@
                 <h1>Welcome to Weather Journal App</h1>
                 <p>This application is a part of Front End Web Developer Nanodegree by Udacity. <br/>
                     Weather data are fetching by using - <a href="https://openweathermap.org/api" target="_blank">OpenWeather API</a>.</p>
-                <hr/>
                 <h2>How it works:</h2>
-                <p>Set a value on the text field eg. <a href="#" title="Skiathos" onclick="setValueToInput(this.title);"><em>94040,us</em></a>.</p>
-                <p>Note: The format is <code>{zip code},{country code}</code>.<br/>Country codes can be find <a href="https://www.iso.org/obp/ui/#search/code" target="_blank">here</a>,<br/>if country code <strong><u>is not</u></strong> specified then<br/>the search works for USA as a default.
-                </p>
+                <div class="column">
+                    <p>Set a value on the text field eg. <a href="#" id="mySearch"><em>1000,be</em></a>,<br/>
+                    and how you feel today and click on the generate button!</p>
+                    <p>Note: The format is <code>{zip code},{country code}</code>.<br/>Country codes can be find <a href="https://www.iso.org/obp/ui/#search/code" target="_blank">here</a>,<br/>if country code <strong><u>is not</u></strong> specified then<br/>the search works for USA as a default.</p>
+                </div>
             </section>
             <section class="search">
                 <form>
                     <div class="indiv">
                         <h2><span><i class="fas fa-map-marker-alt"></i> Weather in</span>
-                        <input class="input-field" type="search" id="zip" placeholder="eg. 37002,gr" autocomplete="off">
+                            <input class="input-field" type="search" id="zip" placeholder="eg. 94040,us" autocomplete="off">
                         </h2>
                     </div>
                 </form>
+                <div class="column">
+                    <textarea id="feelings" placeholder="What a Perfect Day to Smile!" cols="30" rows="2"></textarea>
+                    <button class="generate" id="generate">GENERATE</button>
+                </div>
             </section>
-            <section class="last-entries"></section>
+            <section class="entryHolder">
+                <h2 id="data.name"></h2>
+                <div>
+                    <h3 id="data.dt"></h3>
+                    <h3 id="data.weather.icon"></h3>
+                    <h3 id="data.weather.description"></h3>
+                    <h3 id="data.main.temp"></h3>
+                    <h3 id="data.main.feels_like"></h3>
+                </div>
+            </section>
         </main>
         <footer>
             <p>&copy Udacity 2021</p>

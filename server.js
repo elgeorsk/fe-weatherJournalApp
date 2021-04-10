@@ -42,22 +42,22 @@ const projectData = {
                         ],
                         "base": "stations",
                         "main": {
-                            "temp": 279.79,
-                            "feels_like": 278.92,
-                            "temp_min": 279.15,
-                            "temp_max": 280.37,
-                            "pressure": 1013,
+                            "temp": 8.28,
+                            "feels_like": 7.64,
+                            "temp_min": 8,
+                            "temp_max": 8.33,
+                            "pressure": 1012,
                             "humidity": 93
                         },
-                        "visibility": 6000,
+                        "visibility": 8000,
                         "wind": {
                             "speed": 1.54,
-                            "deg": 60
+                            "deg": 80
                         },
                         "clouds": {
                             "all": 75
                         },
-                        "dt": 1618040053,
+                        "dt": 1618055325,
                         "sys": {
                             "type": 1,
                             "id": 1227,

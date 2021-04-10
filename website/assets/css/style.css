@@ -37,12 +37,6 @@ a:hover, button:hover{
     text-decoration: none;
 }
 
-hr {
-    height: 10px;
-    border: 0;
-    box-shadow: 0 10px 10px -10px #017A9B inset;
-}
-
 p {
     padding: 10px;
     font-size: 15px;
@@ -60,6 +54,7 @@ header {
 }
 
 button {
+    font-family: 'Oswald', sans-serif;
     background-color: Transparent;
     color: #017A9B;
     background-repeat:no-repeat;
@@ -68,6 +63,19 @@ button {
     cursor:pointer;
     overflow: hidden;
     outline:none;
+}
+
+.generate {
+    background-color: #017A9B;
+    color: #eb6e4b;
+    transition: 0.5s;
+}
+
+.generate:hover {
+   background-color: #eb6e4b;
+   color: #017A9B;
+   border-radius: 25%;
+   transition: 0.5s;
 }
 
 .logo{
@@ -92,11 +100,19 @@ header p {
     width: 100%;
 }
 
-input{
-    font-size:16px;
+input {
+    font-size: 16px;
     font-family: 'Oswald', sans-serif;
     width: 100%;
     border: none;
+}
+
+textarea {
+    font-size:16px;
+    font-family: 'Oswald', sans-serif;
+    border: none;
+    padding: 10px;
+    margin-right: 5px;
 }
 
 .input-field {
@@ -109,18 +125,17 @@ input{
     background: none;
 }
 
-.input-field:not(:placeholder-shown) {
+.input-field:not(:placeholder-shown), textarea:not(:placeholder-shown) {
     color: #017A9B;
     border-bottom: 4px solid #017A9B;
-    padding-left: 10px;
 }
 
-.input-field:focus {
+.input-field:focus, textarea:focus {
     outline: none;
     border-bottom: 4px solid #017A9B;
 }
 
-main{
+main {
     grid-area: main;
     display: grid;
     padding: 5px;
@@ -128,7 +143,7 @@ main{
     grid-template-areas:
     "info"
     "search"
-    "recent";
+    "entryHolder";
     overflow-y: auto;
 }
 
@@ -140,26 +155,47 @@ section {
 .info {
     grid-area: info;
     text-align: center;
+    box-shadow: 0 10px 10px -10px #017A9B;
 }
 
-.search{
+.column {
+    display: inline-flex;
+    margin-bottom: 10px;
+}
+
+.search {
     grid-area: search;
     text-align: center;
 }
 
-.last-entries{
-    grid-area: recent;
-}
-
-.info img {
-    margin: 20px;
-    width: 10em;
-    height: 10em;
-    border-radius: 25px;
-    box-shadow: 0 0 5px #1D5174;
+.entryHolder {
+    grid-area: entryHolder;
+    overflow-y: auto;
 }
 
 footer{
     grid-area: footer;
     text-align: center;
+    box-shadow: 0px -10px 10px -10px #017a9b;
+}
+
+/* Custom scroll bar */
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #017A9B;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #eb6e4b;
 }
