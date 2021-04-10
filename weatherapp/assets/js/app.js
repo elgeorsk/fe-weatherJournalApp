@@ -6,6 +6,7 @@ let apiKey = '&appid=de56270aa19a78cd9c7088582a6ee204';
 let infoSec = document.getElementsByClassName('info')[0];
 let entryHolderSec = document.getElementsByClassName('entryHolder')[0];
 
+let logo = document.getElementById('homepage');
 let mySearch = document.getElementById('mySearch');
 let weatherInput = document.getElementById('zip');
 let feelingsInput = document.getElementById('feelings');
@@ -15,7 +16,7 @@ let genBtn = document.getElementById('generate');
 let counter = 0;
 let hideBtn = document.getElementById('hide');
 
-hideBtn.addEventListener('click', function(e){
+hideBtn.addEventListener('click', function(e) {
     counter++;
     if (counter === 1){
         hideInfoSec();
@@ -24,7 +25,13 @@ hideBtn.addEventListener('click', function(e){
     }
 });
 
-mySearch.addEventListener('click', function(e){
+logo.addEventListener('click', function(e) {
+    weatherInput.value = '';
+    feelingsInput.value = '';
+    showInfoSec();
+});
+
+mySearch.addEventListener('click', function(e) {
     hideInfoSec();
     weatherInput.value = this.text;
     feelingsInput.value = 'What a Perfect Day to Smile!';
@@ -64,10 +71,10 @@ function checkZipCode(value){
 
 // getCurrentWeather function - return weather data based on search
 const getCurrentWeather = async (baseURL, data, apiKey) => {
-    const res = await fetch(baseURL+ data + '&units=metric' + apiKey);
+    //const res = await fetch(baseURL+ data + '&units=metric' + apiKey);
 
     // call dummy api point
-    //const res = await fetch('/dummyDemoData');
+    const res = await fetch('/dummyDemoData');
     try {
         const data = await res.json();
         if (!data.hasOwnProperty('coord')) {
