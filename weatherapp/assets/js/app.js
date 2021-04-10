@@ -12,6 +12,9 @@ let weatherInput = document.getElementById('zip');
 let feelingsInput = document.getElementById('feelings');
 let genBtn = document.getElementById('generate');
 
+let successDiv = document.getElementsByClassName('success')[0];
+let errorDiv = document.getElementsByClassName('error')[0];
+
 // hide/show functionality
 let counter = 0;
 let hideBtn = document.getElementById('hide');
@@ -53,7 +56,7 @@ genBtn.addEventListener('click', function(e){
     hideInfoSec();
     checkZipCode(weatherInput.value);
     if(data === '' || data === undefined){
-        console.log('No data');
+        errorDisplay();
     } else {
         getCurrentWeather(baseURL,data, apiKey);
     }
@@ -71,14 +74,14 @@ function checkZipCode(value){
 
 // getCurrentWeather function - return weather data based on search
 const getCurrentWeather = async (baseURL, data, apiKey) => {
-    //const res = await fetch(baseURL+ data + '&units=metric' + apiKey);
+    const res = await fetch(baseURL+ data + '&units=metric' + apiKey);
 
     // call dummy api point
-    const res = await fetch('/dummyDemoData');
+    //const res = await fetch('/dummyDemoData');
     try {
         const data = await res.json();
         if (!data.hasOwnProperty('coord')) {
-            //TODO not found error
+            errorDisplay();
             console.log('Not Found')
         } else {
             console.log(data);
@@ -93,6 +96,8 @@ const getCurrentWeather = async (baseURL, data, apiKey) => {
 
 // add values to articles
 function addCurrentWeather(data){
+    successDiv.style.display = 'block';
+    errorDiv.style.display = 'none';
 
     document.getElementById('data.name').innerText  = data.name;
     document.getElementById('data.dt').innerText  = new Date(data.dt * 1000);
@@ -103,9 +108,29 @@ function addCurrentWeather(data){
     //  https://www.fileformat.info/info/unicode/char/2103/index.htm
     document.getElementById('data.main.temp').innerText  = data.main.temp + String.fromCodePoint(0x2103);
     document.getElementById('data.main.feels_like').innerText  = data.main.feels_like + String.fromCodePoint(0x2103);
+    document.getElementById('myFeelings').innerText  = feelingsInput.value;
 }
 
 
+// custom errorMessage
+function errorDisplay(){
+    successDiv.style.display = 'none';
+    errorDiv.style.display = 'block';
+
+    let text = '<p><img src =\'http://openweathermap.org/img/wn/11n@2x.png\'/>' +
+    '... no data found for - <strong><em>';
+
+    if (weatherInput.value === '' || weatherInput === null){
+        text += 'undefined';
+    } else {
+        text += weatherInput.value;
+    }
+
+    text += '</em></strong></p>';
+
+
+    errorDiv.innerHTML  = text;
+}
 
 // in small screens hide info section
 if (window.innerWidth <= 700 ) {
