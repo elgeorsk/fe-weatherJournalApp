@@ -1,35 +1,53 @@
 <!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Weather Journal</title>
-<link href="https://fonts.googleapis.com/css?family=Oswald:400,600,700|Ranga:400,700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
-</head>
- <body>
-<div id = "app">
-  <div class ="holder headline">
-    Weather Journal App
-  </div>
-  <div class ="holder zip">
-    <label for="zip">Enter Zipcode here</label>
-    <input type="text" id="zip" placeholder="enter zip code here">
-  </div>
-  <div class ="holder feel">
-    <label for="feelings">How are you feeling today?</label>
-    <textarea class= "myInput" id="feelings" placeholder="Enter your feelings here" rows="9" cols="50"></textarea>
-    <button id="generate" type = "submit"> Generate </button>
-  </div>
-  <div class ="holder entry">
-    <div class = "title">Most Recent Entry</div>
-   <div id = "entryHolder">
-    <div id = "date"></div> 
-   <div id = "temp"></div>
-   <div id = "content"></div>
-  </div>
-  </div>
-  </div>
-<script src="app.js" type="text/javascript"></script>
-
-</body>
+<html xmlns:https="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta charset="UTF-8">
+        <!-- mobile first -->
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <!-- using https://realfavicongenerator.net/ to generate favicon -->
+        <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32x32.png">
+        <!-- Font Awesome icons (free version)-->
+        <script src="https://kit.fontawesome.com/ab29a89efe.js" crossorigin="anonymous"></script>
+        <title>Weather Journal App</title>
+        <link rel="stylesheet" href="assets/css/media.css">
+    </head>
+    <body>
+        <header>
+            <a href="#">
+                <div>
+                    <img src="assets/img/weatherApp.png" class="logo"/>
+                    <p>Weather Journal App</p>
+                </div>
+            </a>
+            <section class="toggle">
+                    <button class="fas fa-eye" title="Hide/Show intro" id="hide"></button>
+            </section>
+        </header>
+        <main>
+            <section class="info">
+                <h1>Welcome to Weather Journal App</h1>
+                <p>This application is a part of Front End Web Developer Nanodegree by Udacity. <br/>
+                    Weather data are fetching by using - <a href="https://openweathermap.org/api" target="_blank">OpenWeather API</a>.</p>
+                <hr/>
+                <h2>How it works:</h2>
+                <p>Set a value on the text field eg. <a href="#" title="Skiathos" onclick="setValueToInput(this.title);"><em>94040,us</em></a>.</p>
+                <p>Note: The format is <code>{zip code},{country code}</code>.<br/>Country codes can be find <a href="https://www.iso.org/obp/ui/#search/code" target="_blank">here</a>,<br/>if country code <strong><u>is not</u></strong> specified then<br/>the search works for USA as a default.
+                </p>
+            </section>
+            <section class="search">
+                <form>
+                    <div class="indiv">
+                        <h2><span><i class="fas fa-map-marker-alt"></i> Weather in</span>
+                        <input class="input-field" type="search" id="zip" placeholder="eg. 37002,gr" autocomplete="off">
+                        </h2>
+                    </div>
+                </form>
+            </section>
+            <section class="last-entries"></section>
+        </main>
+        <footer>
+            <p>&copy Udacity 2021</p>
+        </footer>
+        <script src="assets/js/app.js" type="text/javascript"></script>
+    </body>
 </html>
