@@ -12,7 +12,6 @@ let weatherInput = document.getElementById('zip');
 let feelingsInput = document.getElementById('feelings');
 let genBtn = document.getElementById('generate');
 
-let loaderDiv = document.getElementsByClassName('loader')[0];
 let successDiv = document.getElementsByClassName('success')[0];
 let errorDiv = document.getElementsByClassName('error')[0];
 
@@ -56,7 +55,6 @@ weatherInput.addEventListener('keypress', function(e) {
 genBtn.addEventListener('click', function(e){
     hideInfoSec();
     checkZipCode(weatherInput.value);
-    loaderDiv.style.display = 'block';
     if(data === '' || data === undefined){
         errorDisplay();
     } else {
@@ -81,7 +79,6 @@ const getCurrentWeather = async (baseURL, data, apiKey) => {
     // call dummy api point
     //const res = await fetch('/dummyDemoData');
     try {
-        loaderDiv
         const data = await res.json();
         if (!data.hasOwnProperty('coord')) {
             errorDisplay();
@@ -98,7 +95,6 @@ const getCurrentWeather = async (baseURL, data, apiKey) => {
 // add values to articles
 function addCurrentWeather(data){
     successDiv.style.display = 'block';
-    loaderDiv.style.display = 'none';
     errorDiv.style.display = 'none';
 
     document.getElementById('data.name').innerText  = data.name;
@@ -117,7 +113,6 @@ function addCurrentWeather(data){
 // custom errorMessage
 function errorDisplay(){
     successDiv.style.display = 'none';
-    loaderDiv.style.display = 'none';
     errorDiv.style.display = 'block';
 
     let text = '<p><img src =\'http://openweathermap.org/img/wn/11n@2x.png\'/>' +
