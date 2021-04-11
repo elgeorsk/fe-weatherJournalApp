@@ -2,7 +2,7 @@
 let baseURL = 'https://api.openweathermap.org/data/2.5/weather?zip='; // search based on zip code
 let data;
 let latestVisited = [];
-let apiKey = '&appid=de56270aa19a78cd9c7088582a6ee204';
+const apiKey = '&appid=de56270aa19a78cd9c7088582a6ee204';
 
 let infoSec = document.getElementsByClassName('info')[0];
 let entryHolderSec = document.getElementsByClassName('entryHolder')[0];
