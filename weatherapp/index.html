@@ -50,15 +50,36 @@
             </section>
             <section class="entryHolder">
                 <div class="success">
-                    <h2 id="data.name"></h2>
-                    <h3 id="data.dt"></h3>
-                    <h3 id="data.weather.icon"></h3>
-                    <h3 id="data.weather.description"></h3>
-                    <h3 id="data.main.temp"></h3>
-                    <h3 id="data.main.feels_like"></h3>
-                    <h3 id="myFeelings"></h3>
+                    <div>
+                        <h2 id="data.name"></h2>
+                    </div>
+                    <div>
+                        <figure>
+                            <div class="column">
+                                <div id="data.weather.icon"></div>
+                                    <div class="temp">
+                                        <p id="data.main.temp"></p>
+                                        <p id="data.main.feels_like"></p>
+                                    </div>
+                                    <div class="sun">
+                                        <p id="data.sys.sunrise"></p>
+                                        <p id="data.sys.sunset"></p>
+                                    </div>
+                            </div>
+                            <div>
+                                <p id="myFeelings"></p>
+                            </div>
+                            <figcaption id="data.dt"></figcaption>
+                        </figure>
+                    </div>
                 </div>
                 <div class="error"></div>
+                <div class="latest">
+                    <h2>Latest results</h2>
+                    <div class="visits">
+                        <ul id="visits"></ul>
+                    </div>
+                </div>
             </section>
         </main>
         <footer>

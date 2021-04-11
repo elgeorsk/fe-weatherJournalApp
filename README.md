@@ -42,7 +42,7 @@ There are the following id's in the `index.html` file:
 * `id="zip"` - input where the user can enter zip's in format `{zip code},{country code}`.
 * `id="feelings"` - textarea where the user can enter long text.
 
-By press the button with `id=generate` and a dynamically updated section appears in the html page,
+By pressing the button with `id=generate` and a dynamically updated section appears in the html page,
 with retrieved data based on `zip` and inserted `feelings`.
 
 

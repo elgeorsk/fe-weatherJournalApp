@@ -29,7 +29,7 @@ body{
 
 a, a:link, a:active, a:visited {
     font-size: 1.5em;
-    color: #017A9B;
+    color: #017a9b;
 }
 
 a:hover, button:hover{
@@ -49,14 +49,19 @@ header {
     padding: 10px;
 }
 
-.toggle{
+.toggle {
     float: right;
+}
+
+#hide:focus {
+    color: #017a9b;
+    outline: none;
 }
 
 button {
     font-family: 'Oswald', sans-serif;
     background-color: Transparent;
-    color: #017A9B;
+    color: #017a9b;
     background-repeat:no-repeat;
     font-size: 1.5em;
     border: none;
@@ -65,15 +70,15 @@ button {
     outline:none;
 }
 
-.generate {
-    background-color: #017A9B;
+.generate, .generate:focus {
+    background-color: #017a9b;
     color: #eb6e4b;
     transition: 0.5s;
 }
 
 .generate:hover {
    background-color: #eb6e4b;
-   color: #017A9B;
+   color: #017a9b;
    border-radius: 25%;
    transition: 0.5s;
 }
@@ -126,13 +131,13 @@ textarea {
 }
 
 .input-field:not(:placeholder-shown), textarea:not(:placeholder-shown) {
-    color: #017A9B;
-    border-bottom: 4px solid #017A9B;
+    color: #017a9b;
+    border-bottom: 4px solid #017a9b;
 }
 
 .input-field:focus, textarea:focus {
     outline: none;
-    border-bottom: 4px solid #017A9B;
+    border-bottom: 4px solid #017a9b;
 }
 
 main {
@@ -154,7 +159,7 @@ section {
 .info {
     grid-area: info;
     text-align: center;
-    box-shadow: 0 10px 10px -10px #017A9B;
+    box-shadow: 0 10px 10px -10px #017a9b;
 }
 
 .column {
@@ -165,12 +170,89 @@ section {
 .search {
     grid-area: search;
     text-align: center;
+    padding-bottom: 20px;
+    box-shadow: 0 10px 10px -10px #017a9b;
 }
 
 .entryHolder {
+    padding: 10px;
     grid-area: entryHolder;
     display: none;
     overflow-y: auto;
+}
+
+.success, .error, .latest {
+    display: none;
+}
+
+.success figure {
+    text-align:center;
+    margin: auto;
+}
+
+.success figcaption {
+  color: black;
+  font-style: italic;
+  font-size: 12px;
+  padding: 5px;
+  text-align: right;
+}
+
+.success p {
+    font-size: 20px;
+    font-family: 'Oswald', sans-serif;
+    padding: 0;
+}
+
+.temp {
+    padding: 10px;
+    border-right-style: groove;
+    border-color: #017a9b;
+}
+
+#visits li {
+    padding: 10px;
+    border-left-style: groove;
+    border-color: #017a9b;
+}
+
+.sun {
+    padding: 10px;
+}
+
+#myFeelings {
+    font-size: 20px;
+    font-family: 'Oswald', sans-serif;
+    width: 50%;
+    margin: auto;
+    text-align: center;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+.error {
+    text-align: center;
+}
+
+.error p {
+    font-size: 1.5em
+}
+
+.error img, .success img {
+    width: 7em;
+    height: 7em;
+    border:2px solid #fff;
+    border-radius: 190px;
+    box-shadow: 0px 0px 10px #017a9b;
+}
+
+#visits {
+    list-style-type: none;
+    display: inline-flex;
+}
+
+.visits {
+    overflow-x: auto;
 }
 
 footer{
@@ -192,7 +274,7 @@ footer{
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #017A9B;
+  background: #017a9b;
 }
 
 /* Handle on hover */

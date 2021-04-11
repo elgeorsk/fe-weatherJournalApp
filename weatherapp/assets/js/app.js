@@ -1,6 +1,7 @@
 /* Global Variables */
 let baseURL = 'https://api.openweathermap.org/data/2.5/weather?zip='; // search based on zip code
 let data;
+let latestVisited = [];
 let apiKey = '&appid=de56270aa19a78cd9c7088582a6ee204';
 
 let infoSec = document.getElementsByClassName('info')[0];
@@ -14,6 +15,8 @@ let genBtn = document.getElementById('generate');
 
 let successDiv = document.getElementsByClassName('success')[0];
 let errorDiv = document.getElementsByClassName('error')[0];
+let latestDiv = document.getElementsByClassName('latest')[0];
+let visitsList = document.getElementById('visits');
 
 // hide/show functionality
 let counter = 0;
@@ -52,12 +55,13 @@ weatherInput.addEventListener('keypress', function(e) {
 });
 
 
-genBtn.addEventListener('click', function(e){
+genBtn.addEventListener('click', function(e) {
+
     hideInfoSec();
     checkZipCode(weatherInput.value);
-    if(data === '' || data === undefined){
+    if(data === '' || data === undefined || feelingsInput.value === ''){
         errorDisplay();
-    } else {
+    } else if (data !== null && feelingsInput.value !== null) {
         getCurrentWeather(baseURL,data, apiKey);
     }
 });
@@ -96,17 +100,49 @@ const getCurrentWeather = async (baseURL, data, apiKey) => {
 function addCurrentWeather(data){
     successDiv.style.display = 'block';
     errorDiv.style.display = 'none';
+    latestDiv.style.display = 'block';
 
     document.getElementById('data.name').innerText  = data.name;
-    document.getElementById('data.dt').innerText  = new Date(data.dt * 1000);
-    document.getElementById('data.weather.icon').innerHTML  = '<img src =\'http://openweathermap.org/img/wn/' + data.weather[0].icon + '@2x.png\'/>';
-    document.getElementById('data.weather.description').innerText  = data.weather[0].description;
+    document.getElementById('data.dt').innerText  = 'Last update: ' + new Date(data.dt * 1000);
+    document.getElementById('data.weather.icon').innerHTML  = '<img src =\'http://openweathermap.org/img/wn/' + data.weather[0].icon + '@2x.png\' alt="'+ data.weather[0].description +'"/>';
+    document.getElementById('myFeelings').innerHTML  = '<i class="fas fa-comments"></i> ' + feelingsInput.value;
 
     // ref. https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/fromCodePoint
     //  https://www.fileformat.info/info/unicode/char/2103/index.htm
-    document.getElementById('data.main.temp').innerText  = data.main.temp + String.fromCodePoint(0x2103);
-    document.getElementById('data.main.feels_like').innerText  = data.main.feels_like + String.fromCodePoint(0x2103);
-    document.getElementById('myFeelings').innerText  = feelingsInput.value;
+    document.getElementById('data.main.temp').innerHTML  = '<i class="fas fa-temperature-high"></i> ' + data.main.temp + String.fromCodePoint(0x2103);
+    document.getElementById('data.main.feels_like').innerHTML  = '<i class="fas fa-fingerprint"></i>  Feels like: ' + data.main.feels_like + String.fromCodePoint(0x2103);
+
+    let sunrise = new Date(data.sys.sunrise * 1000);
+    let sunset = new Date(data.sys.sunset * 1000);
+    let options = {hour: "numeric", minute: "numeric"};
+
+    document.getElementById('data.sys.sunrise').innerHTML = '<i class="fas fa-sun"></i> ' + sunrise.toLocaleTimeString(options);
+    document.getElementById('data.sys.sunset').innerHTML = '<i class="fas fa-moon"></i> ' + sunset.toLocaleTimeString(options);
+
+    let place = {"name": data.name, "icon": data.weather[0].icon, "desc": data.weather[0].description, "temp": data.main.temp};
+
+    if (latestVisited === null || !latestVisited.some( latestVisited => latestVisited['name'] === data.name )) {
+        latestVisited.push(place);
+        addLastVisitedSec(latestVisited);
+    }
+}
+
+function addLastVisitedSec(data) {
+    latestDiv.style.display = 'block';
+    successDiv.style.display = 'block';
+    errorDiv.style.display = 'none';
+
+    visitsList.innerHTML = '';
+    for (p = 0; p < data.length; p++){
+        let li = document.createElement('li');
+        li.innerHTML =
+        '<figure>' +
+        '<img src =\'http://openweathermap.org/img/wn/' + data[p].icon + '@2x.png\' alt="'+ data[p].description +'"/>' +
+        '<figcaption>' + data[p].name + ' ' + data[p].temp + String.fromCodePoint(0x2103) + '</figcaption>' +
+        '</figure>';
+
+        visitsList.appendChild(li);
+    }
 }
 
 
@@ -114,18 +150,20 @@ function addCurrentWeather(data){
 function errorDisplay(){
     successDiv.style.display = 'none';
     errorDiv.style.display = 'block';
+    latestDiv.style.display = 'none';
 
-    let text = '<p><img src =\'http://openweathermap.org/img/wn/11n@2x.png\'/>' +
-    '... no data found for - <strong><em>';
+    let text = '<p><img src =\'http://openweathermap.org/img/wn/11n@2x.png\'/></p>';
 
-    if (weatherInput.value === '' || weatherInput === null){
-        text += 'undefined';
-    } else {
-        text += weatherInput.value;
+    if (weatherInput.value === '') {
+        text += '<p>... no data found for - empty data<strong><em>';
+        weatherInput.focus();
+    } else if (feelingsInput.value === '') {
+        text += '<p>... why are you in bad mood?</p>';
+        feelingsInput.focus();
     }
-
-    text += '</em></strong></p>';
-
+    else {
+        text += weatherInput.value + '</em></strong></p>';
+    }
 
     errorDiv.innerHTML  = text;
 }
@@ -138,7 +176,7 @@ if (window.innerWidth <= 700 ) {
 // functions
 function hideInfoSec(){
    infoSec.style.display = 'none';
-   entryHolderSec.style.display = 'block';
+   showEntryHolderSec();
    hideBtn.classList.remove('fa-eye-slash');
    hideBtn.classList.add('fa-eye-slash');
    counter = 1;
@@ -146,6 +184,7 @@ function hideInfoSec(){
 
 function showInfoSec(){
     infoSec.style.display = 'block';
+    hideEntryHolderSec();
     entryHolderSec.style.display = 'none';
     hideBtn.classList.remove('fa-eye-slash');
     hideBtn.classList.add('fa-eye');
@@ -153,11 +192,11 @@ function showInfoSec(){
 }
 
 function showEntryHolderSec(){
-    entryHolder.style.display = 'block';
+    entryHolderSec.style.display = 'block';
 }
 
-function hideLatestSec(){
-    entryHolder.style.display = 'none';
+function hideEntryHolderSec(){
+    entryHolderSec.style.display = 'none';
 }
 
 // Create a new date instance dynamically - add to footer
