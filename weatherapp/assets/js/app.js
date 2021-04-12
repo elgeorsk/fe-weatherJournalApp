@@ -197,7 +197,7 @@ function addLastVisitedSec(data) {
         li.innerHTML =
         '<figure>' +
         '<img src =\'http://openweathermap.org/img/wn/' + data[p].icon + '@2x.png\' alt="'+ data[p].description +'"/>' +
-        '<figcaption>' + data[p].name + ' ' + data[p].temp + '</figcaption>' +
+        '<figcaption>' + data[p].name + ' - ' + data[p].temp + '</figcaption>' +
         '</figure>';
 
         visitsList.appendChild(li);
