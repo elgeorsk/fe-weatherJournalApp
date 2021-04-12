@@ -74,6 +74,7 @@ button {
     background-color: #017a9b;
     color: #eb6e4b;
     transition: 0.5s;
+
 }
 
 .generate:hover {
@@ -133,6 +134,22 @@ textarea {
 .input-field:not(:placeholder-shown), textarea:not(:placeholder-shown) {
     color: #017a9b;
     border-bottom: 4px solid #017a9b;
+}
+
+.metric {
+    width: 80px;
+    align-items: center;
+}
+
+#metrics {
+    width: 10px;
+    height: 10px;
+
+    transform: scale(2);
+}
+
+label {
+    font-family: 'Oswald', sans-serif;
 }
 
 .input-field:focus, textarea:focus {

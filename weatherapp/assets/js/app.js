@@ -1,6 +1,8 @@
 /* Global Variables */
 let baseURL = 'https://api.openweathermap.org/data/2.5/weather?zip='; // search based on zip code
 let data;
+let dataMetric;
+let tempSign;
 let latestVisited = [];
 const apiKey = '&appid=de56270aa19a78cd9c7088582a6ee204';
 
@@ -11,6 +13,8 @@ let logo = document.getElementById('homepage');
 let mySearch = document.getElementById('mySearch');
 let weatherInput = document.getElementById('zip');
 let feelingsInput = document.getElementById('feelings');
+let mlabel = document.getElementById('mlabel');
+let metrics = document.getElementById('metrics');
 let genBtn = document.getElementById('generate');
 
 let successDiv = document.getElementsByClassName('success')[0];
@@ -40,6 +44,8 @@ logo.addEventListener('click', function(e) {
 mySearch.addEventListener('click', function(e) {
     hideInfoSec();
     weatherInput.value = this.text;
+    metrics.checked = true;
+    mlabel.innerText = String.fromCodePoint(0x2103);
     feelingsInput.value = 'What a Perfect Day to Smile!';
     genBtn.click();
 });
@@ -54,17 +60,60 @@ weatherInput.addEventListener('keypress', function(e) {
     }
 });
 
+metrics.addEventListener('click', function(e) {
+    if (this.checked) {
+        mlabel.innerText = String.fromCodePoint(0x2103);
+    } else {
+        mlabel.innerText = String.fromCodePoint(0x2109);
+    }
+});
 
 genBtn.addEventListener('click', function(e) {
-
     hideInfoSec();
     checkZipCode(weatherInput.value);
     if(data === '' || data === undefined || feelingsInput.value === ''){
         errorDisplay();
     } else if (data !== null && feelingsInput.value !== null) {
-        getCurrentWeather(baseURL,data, apiKey);
+        if (metrics.checked) {
+            dataMetric = '&units=metric';
+            tempSign = String.fromCodePoint(0x2103);
+        } else {
+            dataMetric = '&units=imperial';
+            tempSign = String.fromCodePoint(0x2109);
+        }
+        getCurrentWeather(baseURL, data, dataMetric, apiKey)
+        .then(function(data){
+            console.log("data - ", data);
+            postData('/dummyGetPlace',{name: data.name, dt: data.dt, icon: data.weather[0].icon,
+                                                           description: data.weather[0].description, temp: data.main.temp,
+                                                           feels_like: data.main.feels_like,
+                                                           sunrise:data.sys.sunrise, sunset: data.sys.sunset
+                                                           });
+            addCurrentWeather();
+        });
     }
 });
+
+
+// postData
+const postData = async(url = '', data = {}) => {
+    const response = await fetch(url, {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+    });
+
+    try {
+        const newData = await response.json();
+        console.log("newData - " + newData.name);
+        return newData;
+    } catch(error){
+        console.log('error',error);
+    }
+ }
 
 // function checkZipCode
 function checkZipCode(value){
@@ -77,8 +126,8 @@ function checkZipCode(value){
 }
 
 // getCurrentWeather function - return weather data based on search
-const getCurrentWeather = async (baseURL, data, apiKey) => {
-    const res = await fetch(baseURL+ data + '&units=metric' + apiKey);
+const getCurrentWeather = async(baseURL, data, dataMetric, apiKey) => {
+    const res = await fetch(baseURL+ data + dataMetric + apiKey);
 
     // call dummy api point
     //const res = await fetch('/dummyDemoData');
@@ -86,9 +135,8 @@ const getCurrentWeather = async (baseURL, data, apiKey) => {
         const data = await res.json();
         if (!data.hasOwnProperty('coord')) {
             errorDisplay();
-        } else {
-            addCurrentWeather(data);
         }
+
         return data;
     }  catch(error) {
         console.log('error', error);
@@ -96,36 +144,47 @@ const getCurrentWeather = async (baseURL, data, apiKey) => {
         }
 }
 
-// add values to articles
-function addCurrentWeather(data){
-    successDiv.style.display = 'block';
-    errorDiv.style.display = 'none';
-    latestDiv.style.display = 'block';
+// add values to section
+const addCurrentWeather = async() => {
+    const req = await fetch('/all');
 
-    document.getElementById('data.name').innerText  = data.name;
-    document.getElementById('data.dt').innerText  = 'Last update: ' + new Date(data.dt * 1000);
-    document.getElementById('data.weather.icon').innerHTML  = '<img src =\'http://openweathermap.org/img/wn/' + data.weather[0].icon + '@2x.png\' alt="'+ data.weather[0].description +'"/>';
-    document.getElementById('myFeelings').innerHTML  = '<i class="fas fa-comments"></i> ' + feelingsInput.value;
+    try {
+        const data = await req.json();
+        console.log("addCurrentWeatherData" + data);
 
-    // ref. https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/fromCodePoint
-    //  https://www.fileformat.info/info/unicode/char/2103/index.htm
-    document.getElementById('data.main.temp').innerHTML  = '<i class="fas fa-temperature-high"></i> ' + data.main.temp + String.fromCodePoint(0x2103);
-    document.getElementById('data.main.feels_like').innerHTML  = '<i class="fas fa-fingerprint"></i>  Feels like: ' + data.main.feels_like + String.fromCodePoint(0x2103);
+        successDiv.style.display = 'block';
+        errorDiv.style.display = 'none';
+        latestDiv.style.display = 'block';
 
-    let sunrise = new Date(data.sys.sunrise * 1000);
-    let sunset = new Date(data.sys.sunset * 1000);
-    let options = {hour: "numeric", minute: "numeric"};
+        document.getElementById('data.name').innerText  = data.name;
+        document.getElementById('data.dt').innerText  = 'Last update: ' + new Date(data.dt * 1000);
+        document.getElementById('data.weather.icon').innerHTML  = '<img src =\'http://openweathermap.org/img/wn/' + data.icon + '@2x.png\' alt="'+ data.description +'"/>';
+        document.getElementById('myFeelings').innerHTML  = '<i class="fas fa-comments"></i> ' + feelingsInput.value;
 
-    document.getElementById('data.sys.sunrise').innerHTML = '<i class="fas fa-sun"></i> ' + sunrise.toLocaleTimeString(options);
-    document.getElementById('data.sys.sunset').innerHTML = '<i class="fas fa-moon"></i> ' + sunset.toLocaleTimeString(options);
+        // ref. https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/fromCodePoint
+        //  https://www.fileformat.info/info/unicode/char/2103/index.htm
+        document.getElementById('data.main.temp').innerHTML  = '<i class="fas fa-temperature-high"></i> ' + data.temp + tempSign;
+        document.getElementById('data.main.feels_like').innerHTML  = '<i class="fas fa-fingerprint"></i>  Feels like: ' + data.feels_like + tempSign;
 
-    let place = {"name": data.name, "icon": data.weather[0].icon, "desc": data.weather[0].description, "temp": data.main.temp};
+        let sunrise = new Date(data.sunrise * 1000);
+        let sunset = new Date(data.sunset * 1000);
+        let options = {hour: "numeric", minute: "numeric"};
 
-    if (latestVisited === null || !latestVisited.some( latestVisited => latestVisited['name'] === data.name )) {
-        latestVisited.push(place);
-        addLastVisitedSec(latestVisited);
+        document.getElementById('data.sys.sunrise').innerHTML = '<i class="fas fa-sun"></i> ' + sunrise.toLocaleTimeString(options);
+        document.getElementById('data.sys.sunset').innerHTML = '<i class="fas fa-moon"></i> ' + sunset.toLocaleTimeString(options);
+
+        let place = {"name": data.name, "icon": data.icon, "desc": data.description, "temp": data.temp + ' ' + tempSign};
+
+        if (latestVisited === null || !latestVisited.some( latestVisited => latestVisited['name'] === data.name )) {
+
+            latestVisited.push(place);
+            addLastVisitedSec(latestVisited);
+        }
+
+    } catch(error) {
+        console.log("error", error);
     }
-}
+};
 
 function addLastVisitedSec(data) {
     latestDiv.style.display = 'block';
@@ -138,7 +197,7 @@ function addLastVisitedSec(data) {
         li.innerHTML =
         '<figure>' +
         '<img src =\'http://openweathermap.org/img/wn/' + data[p].icon + '@2x.png\' alt="'+ data[p].description +'"/>' +
-        '<figcaption>' + data[p].name + ' ' + data[p].temp + String.fromCodePoint(0x2103) + '</figcaption>' +
+        '<figcaption>' + data[p].name + ' ' + data[p].temp + '</figcaption>' +
         '</figure>';
 
         visitsList.appendChild(li);
@@ -154,15 +213,13 @@ function errorDisplay(){
 
     let text = '<p><img src =\'http://openweathermap.org/img/wn/11n@2x.png\'/></p>';
 
-    if (weatherInput.value === '') {
-        text += '<p>... no data found for - empty data<strong><em>';
-        weatherInput.focus();
-    } else if (feelingsInput.value === '') {
+    if (feelingsInput.value === '') {
         text += '<p>... why are you in bad mood?</p>';
         feelingsInput.focus();
     }
     else {
-        text += weatherInput.value + '</em></strong></p>';
+        text += '<p>... no data found for - <strong><em>'+ weatherInput.value + '</em></strong></p>';
+        weatherInput.focus();
     }
 
     errorDiv.innerHTML  = text;

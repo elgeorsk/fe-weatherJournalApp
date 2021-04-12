@@ -76,3 +76,26 @@ app.get('/dummyDemoData', getDemoData);
 function getDemoData(req,res){
     res.send(projectData);
 }
+
+app.post('/dummyGetPlace', getDummyPlace);
+
+let placeData;
+app.get('/all', getPlaceData);
+
+function getPlaceData(req, res){
+    console.log(placeData);
+    res.send(placeData);
+    placeData = null;
+}
+
+function getDummyPlace(req, res){
+    newEntry =
+        { name: req.body.name, dt: req.body.dt, icon: req.body.icon,
+                     description: req.body.description, temp: req.body.temp,
+                     feels_like: req.body.feels_like,
+                     sunrise: req.body.sunrise, sunset: req.body.sunset
+                     };
+
+    placeData = newEntry ;
+    res.send(newEntry);
+}
